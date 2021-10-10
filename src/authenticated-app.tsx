@@ -7,7 +7,7 @@ export const AuthenticatedApp = () => {
   const { logout } = useAuth();
   return (
     <Container>
-      <Header>
+      <Header between>
         <HeaderLeft gap={true}>
           <h2>Logo</h2>
           <h2>项目</h2>
@@ -33,14 +33,7 @@ const Container = styled.div`
     "main";
 `;
 
-const Header = styled.header`
-  padding: 0;
-  grid-area: header;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
+const Header = styled(Row)``;
 
 const HeaderLeft = styled(Row)``;
 
