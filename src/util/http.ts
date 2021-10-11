@@ -1,4 +1,4 @@
-import { AuthProvider, useAuth } from "context/auth-context";
+import { useAuth } from "context/auth-context";
 import qs from "qs";
 import * as auth from "auth-provider";
 

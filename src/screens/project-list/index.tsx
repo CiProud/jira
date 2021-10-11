@@ -4,7 +4,6 @@ import { SearchPanel } from "./search-panel";
 import { List } from "./list";
 import { useState, useEffect } from "react";
 import { cleanObject, useMount, useDebounce } from "util/index";
-import qs from "qs";
 import { useHttp } from "util/http";
 import styled from "@emotion/styled";
 
@@ -21,6 +20,7 @@ export const ProjectListScreen = () => {
 
   useEffect(() => {
     client(["projects", { data: cleanObject(debouncedParam) }]).then(setList);
+    // eslint-disable-next-line
   }, [debouncedParam]);
 
   useMount(() => {
