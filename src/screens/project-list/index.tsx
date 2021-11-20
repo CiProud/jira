@@ -6,28 +6,45 @@ import { useState } from "react";
 import { useMount, useDebounce, useDocumentTitle } from "util/index";
 import { useHttp } from "util/http";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Row, Typography } from "antd";
 import { useProjects } from "util/project";
-import { useUrlQueryParam } from "util/url";
+import { useProjectSearchParams } from "./util";
 
-export const ProjectListScreen = () => {
-  const [users, setUsers] = useState([]);
-  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
-  const debouncedParam = useDebounce(param, 200);
-  const client = useHttp();
-  const { isLoading, error, data: list } = useProjects(debouncedParam);
+export const ProjectListScreen = (props: {
+  setProjectModalOpen: (isOpen: boolean) => void;
+}) => {
   useDocumentTitle("项目列表", false);
+  const [users, setUsers] = useState([]);
+  const [param, setParam] = useProjectSearchParams();
+  const client = useHttp();
+  const {
+    isLoading,
+    error,
+    data: list,
+    retry,
+  } = useProjects(useDebounce(param, 200));
   useMount(() => {
-    client(["users", {}]).then(setUsers);
+    client("users", {}).then(setUsers);
   });
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row align="middle" justify="space-between">
+        <h1>项目列表</h1>
+        <Button onClick={() => props.setProjectModalOpen(true)}>
+          添加项目
+        </Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List users={users} loading={isLoading} dataSource={list || []} />
+      <List
+        setProjectModalOpen={props.setProjectModalOpen}
+        refresh={retry}
+        users={users}
+        loading={isLoading}
+        dataSource={list || []}
+      />
     </Container>
   );
 };

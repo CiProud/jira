@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Routes, Route, Navigate, useNavigate } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import { KanbanScreen } from "screens/kanban";
 import { EpicScreen } from "screens/epic";
 
@@ -8,6 +8,7 @@ export const ProjectScreen = () => {
   let navigate = useNavigate();
   useEffect(() => {
     navigate(window.location.pathname + "/kanban");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>
