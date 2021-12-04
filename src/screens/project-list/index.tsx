@@ -6,12 +6,14 @@ import { useState } from "react";
 import { useMount, useDebounce, useDocumentTitle } from "util/index";
 import { useHttp } from "util/http";
 import styled from "@emotion/styled";
-import { Button, Row, Typography } from "antd";
+import { Row, Typography } from "antd";
 import { useProjects } from "util/project";
-import { useProjectSearchParams } from "./util";
+import { useProjectModal, useProjectSearchParams } from "./util";
+import { ButtonNoPadding } from "components/lib";
 
-export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
+  const { open } = useProjectModal();
   const [users, setUsers] = useState([]);
   const [param, setParam] = useProjectSearchParams();
   const client = useHttp();
@@ -28,14 +30,15 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
     <Container>
       <Row align="middle" justify="space-between">
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding onClick={open} type={"link"}>
+          创建项目
+        </ButtonNoPadding>
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-        projectButton={props.projectButton}
         refresh={retry}
         users={users}
         loading={isLoading}
