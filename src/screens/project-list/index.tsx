@@ -6,10 +6,10 @@ import { useState } from "react";
 import { useMount, useDebounce, useDocumentTitle } from "util/index";
 import { useHttp } from "util/http";
 import styled from "@emotion/styled";
-import { Row, Typography } from "antd";
+import { Row } from "antd";
 import { useProjects } from "util/project";
 import { useProjectModal, useProjectSearchParams } from "./util";
-import { ButtonNoPadding } from "components/lib";
+import { ButtonNoPadding, ErrorBox } from "components/lib";
 
 export const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
@@ -17,12 +17,7 @@ export const ProjectListScreen = () => {
   const [users, setUsers] = useState([]);
   const [param, setParam] = useProjectSearchParams();
   const client = useHttp();
-  const {
-    isLoading,
-    error,
-    data: list,
-    retry,
-  } = useProjects(useDebounce(param, 200));
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 200));
   useMount(() => {
     client("users", {}).then(setUsers);
   });
@@ -35,15 +30,8 @@ export const ProjectListScreen = () => {
         </ButtonNoPadding>
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
-      {error ? (
-        <Typography.Text type={"danger"}>{error.message}</Typography.Text>
-      ) : null}
-      <List
-        refresh={retry}
-        users={users}
-        loading={isLoading}
-        dataSource={list || []}
-      />
+      <ErrorBox error={error} />
+      <List users={users} loading={isLoading} dataSource={list || []} />
     </Container>
   );
 };

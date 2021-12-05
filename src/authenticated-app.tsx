@@ -8,7 +8,6 @@ import { Route, Routes, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "util/index";
-import { useState } from "react";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 
