@@ -4,30 +4,35 @@ import { useAuth } from "context/auth-context";
 import { ProjectListScreen } from "screens/project-list";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
-import { Route, Routes, Navigate } from "react-router";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "util/index";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
+import { useEffect } from "react";
 
 export const AuthenticatedApp = () => {
+  let navigate = useNavigate();
+  useEffect(() => {
+    navigate("/projects");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Container>
-      <Router>
-        <PageHeader />
-        <Main>
-          <Routes>
-            <Route path={"/projects"} element={<ProjectListScreen />}></Route>
-            <Route
-              path={"/projects/:projectId/*"}
-              element={<ProjectScreen />}
-            ></Route>
-            <Navigate to={"/projects"} />
-          </Routes>
-        </Main>
-        <ProjectModal />
-      </Router>
+      {/* <Router> */}
+      <PageHeader />
+      <Main>
+        <Routes>
+          <Route path={"/projects"} element={<ProjectListScreen />}></Route>
+          <Route
+            path={"/projects/:projectId/*"}
+            element={<ProjectScreen />}
+          ></Route>
+          <Navigate to={"/projects"} />
+        </Routes>
+      </Main>
+      <ProjectModal />
+      {/* </Router> */}
     </Container>
   );
 };
